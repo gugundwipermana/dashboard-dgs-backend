@@ -17,6 +17,11 @@ import com.gudperna.model.User;
 import com.gudperna.model.Bidang;
 import com.gudperna.model.Unit;
 import com.gudperna.model.Division;
+import com.gudperna.model.TimelineDetail;
+
+import com.gudperna.util.ConnectionUtil;
+import com.gudperna.dao.impl.TimelineDetailDAOImpl;
+import com.gudperna.dao.TimelineDetailDAO;
 
 public class TimelineDAOImpl implements TimelineDAO {
 
@@ -139,6 +144,9 @@ public class TimelineDAOImpl implements TimelineDAO {
 				user.setBidang(bidang);
 				timeline.setUser(user);
 
+				// HAVE
+				TimelineDetailDAO timelineDetailDAOImpl = new TimelineDetailDAOImpl(ConnectionUtil.getConnection());
+				timeline.setTimelineDetail(timelineDetailDAOImpl.getByTimeline(id));
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(TimelineDAOImpl.class.getName()).log(Level.SEVERE, null, ex);

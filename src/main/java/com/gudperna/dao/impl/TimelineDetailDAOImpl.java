@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gudperna.model.User;
+
 public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 
 	private Connection connection;
@@ -29,7 +31,13 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 		try {
 			if(connection != null) {
 				stmt = connection.createStatement();
-				rs = stmt.executeQuery("SELECT * FROM TL_TIMELINE_DETAILS");
+				rs = stmt.executeQuery("SELECT "+
+					"a.*, "+
+					"b.NAME USER_NAME, "+
+					"b.AVATAR USER_AVATAR, "+
+					"b.COLOR USER_COLOR "+
+				"FROM "+
+					"TL_TIMELINE_DETAILS a INNER JOIN TL_USERS b ON a.USER_ID = b.ID");
 				while(rs.next()) {
 					TimelineDetail timelineDetail = new TimelineDetail();
 					timelineDetail.setId(rs.getInt("id"));
@@ -42,6 +50,14 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 					timelineDetail.setDateStart(rs.getString("date_start"));
 					timelineDetail.setDateEnd(rs.getString("date_end"));
 					timelineDetail.setColor(rs.getString("color"));
+
+					User user = new User();
+					user.setName(rs.getString("USER_NAME"));
+					user.setAvatar(rs.getString("USER_AVATAR"));
+					user.setColor(rs.getString("USER_COLOR"));
+
+					timelineDetail.setUser(user);
+
 					result.add(timelineDetail);
 				}
 			}
@@ -59,7 +75,14 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 
 		TimelineDetail timelineDetail = new TimelineDetail();
 		try {
-			ps = connection.prepareStatement("SELECT * FROM TL_TIMELINE_DETAILS WHERE id = ?");
+			ps = connection.prepareStatement("SELECT "+
+				"a.*, "+
+				"b.NAME USER_NAME, "+
+				"b.AVATAR USER_AVATAR, "+
+				"b.COLOR USER_COLOR "+
+			"FROM "+
+				"TL_TIMELINE_DETAILS a INNER JOIN TL_USERS b ON a.USER_ID = b.ID "+
+			"WHERE a.id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -73,6 +96,13 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 				timelineDetail.setDateStart(rs.getString("date_start"));
 				timelineDetail.setDateEnd(rs.getString("date_end"));
 				timelineDetail.setColor(rs.getString("color"));
+
+				User user = new User();
+				user.setName(rs.getString("USER_NAME"));
+				user.setAvatar(rs.getString("USER_AVATAR"));
+				user.setColor(rs.getString("USER_COLOR"));
+
+				timelineDetail.setUser(user);
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(TimelineDetailDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -153,7 +183,14 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 
 		TimelineDetail timelineDetail = new TimelineDetail();
 		try {
-			ps = connection.prepareStatement("SELECT * FROM TL_TIMELINE_DETAILS WHERE timeline_id = ?");
+			ps = connection.prepareStatement("SELECT "+
+				"a.*, "+
+				"b.NAME USER_NAME, "+
+				"b.AVATAR USER_AVATAR, "+
+				"b.COLOR USER_COLOR "+
+			"FROM "+
+				"TL_TIMELINE_DETAILS a INNER JOIN TL_USERS b ON a.USER_ID = b.ID "+
+			"WHERE a.timeline_id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -167,6 +204,14 @@ public class TimelineDetailDAOImpl implements TimelineDetailDAO {
 				timelineDetail.setDateStart(rs.getString("date_start"));
 				timelineDetail.setDateEnd(rs.getString("date_end"));
 				timelineDetail.setColor(rs.getString("color"));
+
+				User user = new User();
+				user.setName(rs.getString("USER_NAME"));
+				user.setAvatar(rs.getString("USER_AVATAR"));
+				user.setColor(rs.getString("USER_COLOR"));
+
+				timelineDetail.setUser(user);
+
 				result.add(timelineDetail);
 			}
 		} catch(SQLException ex) {

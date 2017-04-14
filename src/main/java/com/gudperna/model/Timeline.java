@@ -1,12 +1,17 @@
 package com.gudperna.model;
 
+import java.util.ArrayList;
+
 public class Timeline {
 	private int id;
 	private int user_id;
 	private String name;
 	private String color;
 
+	// OWNED
 	private User user;
+	// HAVE
+	private ArrayList<TimelineDetail> timelineDetail;
 
 	public int getId() {
 		return id;
@@ -37,13 +42,21 @@ public class Timeline {
 	}
 
 
-
+	// OWNED
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	// HAVE
+	public ArrayList<TimelineDetail> getTimelineDetail() {
+		return timelineDetail;
+	}
+
+	public void setTimelineDetail(ArrayList<TimelineDetail> timelineDetail) {
+		this.timelineDetail = timelineDetail;
 	}
 
 }

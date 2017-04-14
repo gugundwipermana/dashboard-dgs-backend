@@ -13,6 +13,14 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gudperna.model.User;
+import com.gudperna.model.MeetingRoom;
+import com.gudperna.model.BookingUser;
+
+import com.gudperna.util.ConnectionUtil;
+import com.gudperna.dao.impl.BookingUserDAOImpl;
+import com.gudperna.dao.BookingUserDAO;
+
 public class BookingDAOImpl implements BookingDAO {
 
 	private Connection connection;
@@ -29,7 +37,18 @@ public class BookingDAOImpl implements BookingDAO {
 		try {
 			if(connection != null) {
 				stmt = connection.createStatement();
-				rs = stmt.executeQuery("SELECT * FROM TL_BOOKING");
+				rs = stmt.executeQuery(
+					"SELECT "+
+					"  a.*, "+
+					"  b.NAME USER_NAME, "+
+					"  b.NAME USER_NAME, "+
+					"  b.AVATAR USER_AVATAR, "+
+					"  b.COLOR USER_COLOR, "+
+					"  c.NAME MEETING_ROOM_NAME "+
+					"FROM  "+
+					"  TL_BOOKING a "+
+					"  INNER JOIN TL_USERS b ON a.USER_ID = b.ID "+
+					"  INNER JOIN TL_MEETING_ROOMS c ON a.MEETING_ROOM_ID = c.ID ");
 				while(rs.next()) {
 					Booking booking = new Booking();
 					booking.setId(rs.getInt("id"));
@@ -37,6 +56,17 @@ public class BookingDAOImpl implements BookingDAO {
 					booking.setUserId(rs.getInt("user_id"));
 					booking.setDateStart(rs.getString("date_start"));
 					booking.setDateEnd(rs.getString("date_end"));
+
+					User user = new User();
+					user.setName(rs.getString("USER_NAME"));
+					user.setAvatar(rs.getString("USER_AVATAR"));
+					user.setColor(rs.getString("USER_COLOR"));
+					booking.setUser(user);
+
+					MeetingRoom meetingRoom = new MeetingRoom();
+					meetingRoom.setName(rs.getString("MEETING_ROOM_NAME"));
+					booking.setMeetingRoom(meetingRoom);
+
 					result.add(booking);
 				}
 			}
@@ -54,7 +84,20 @@ public class BookingDAOImpl implements BookingDAO {
 
 		Booking booking = new Booking();
 		try {
-			ps = connection.prepareStatement("SELECT * FROM TL_BOOKING WHERE id = ?");
+			ps = connection.prepareStatement(
+				"SELECT "+
+					"  a.*, "+
+					"  b.NAME USER_NAME, "+
+					"  b.NAME USER_NAME, "+
+					"  b.AVATAR USER_AVATAR, "+
+					"  b.COLOR USER_COLOR, "+
+					"  c.NAME MEETING_ROOM_NAME "+
+					"FROM  "+
+					"  TL_BOOKING a "+
+					"  INNER JOIN TL_USERS b ON a.USER_ID = b.ID "+
+					"  INNER JOIN TL_MEETING_ROOMS c ON a.MEETING_ROOM_ID = c.ID "+
+
+				" WHERE a.id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -63,6 +106,20 @@ public class BookingDAOImpl implements BookingDAO {
 				booking.setUserId(rs.getInt("user_id"));
 				booking.setDateStart(rs.getString("date_start"));
 				booking.setDateEnd(rs.getString("date_end"));
+
+				User user = new User();
+				user.setName(rs.getString("USER_NAME"));
+				user.setAvatar(rs.getString("USER_AVATAR"));
+				user.setColor(rs.getString("USER_COLOR"));
+				booking.setUser(user);
+
+				MeetingRoom meetingRoom = new MeetingRoom();
+				meetingRoom.setName(rs.getString("MEETING_ROOM_NAME"));
+				booking.setMeetingRoom(meetingRoom);
+
+				// HAVE
+				BookingUserDAO bookingUserDAO = new BookingUserDAOImpl(ConnectionUtil.getConnection());
+				booking.setBookingUser(bookingUserDAO.getByBooking(id));
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(BookingDAOImpl.class.getName()).log(Level.SEVERE, null, ex);

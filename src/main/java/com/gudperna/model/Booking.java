@@ -1,11 +1,19 @@
 package com.gudperna.model;
 
+import java.util.ArrayList;
+
 public class Booking {
 	private int id;
 	private int meeting_room_id;
 	private int user_id;
 	private String dateStart;
 	private String dateEnd;
+
+	private MeetingRoom meetingRoom;
+	private User user;
+
+	// HAVE
+	private ArrayList<BookingUser> bookingUser;
 
 	public int getId() {
 		return id;
@@ -40,6 +48,32 @@ public class Booking {
 	}
 	public void setDateEnd(String dateEnd) {
 		this.dateEnd = dateEnd;
+	}
+
+
+
+	public MeetingRoom getMeetingRoom() {
+		return meetingRoom;
+	}
+
+	public void setMeetingRoom(MeetingRoom meetingRoom) {
+		this.meetingRoom = meetingRoom;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public ArrayList<BookingUser> getBookingUser() {
+		return bookingUser;
+	}
+
+	public void setBookingUser(ArrayList<BookingUser> bookingUser) {
+		this.bookingUser = bookingUser;
 	}
 
 }
