@@ -64,12 +64,8 @@ public class SecurityFilter implements ContainerRequestFilter {
 							@Override
 	                        public Principal getUserPrincipal() {
 	                            return new Principal() {
-
-	                            	// User user2 = userService.getByEmail(email);
-
 	                                @Override
 	                                public String getName() {
-	                                    // return user2.getName();
 	                                    return email;
 	                                }
 	                            };

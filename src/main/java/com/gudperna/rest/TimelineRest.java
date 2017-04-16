@@ -18,31 +18,79 @@ import com.gudperna.dao.impl.TimelineDAOImpl;
 
 import com.gudperna.model.Timeline;
 
-@Path("/timelines")
+import javax.ws.rs.core.GenericEntity;
+
+@Path("/secured/timelines")
 public class TimelineRest {
 
 	TimelineDAO service = new TimelineDAOImpl(ConnectionUtil.getConnection());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Timeline> getAll() {
+	// public List<Timeline> getAll() {
+	public Response getAll() {
 		List<Timeline> listTimeline = service.getAll(); 
-		return listTimeline; 
+		// return listTimeline; 
+
+		GenericEntity<List<Timeline>> list = new GenericEntity<List<Timeline>>(listTimeline) { };
+        return Response.ok(list)
+            .build();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Timeline getById(@PathParam("id") int id) {
-		return service.getById(id);
+	// public Timeline getById(@PathParam("id") int id) {
+	public Response getById(@PathParam("id") int id) {
+		// return service.getById(id);
+		return Response.ok(service.getById(id))
+            .build();
 	}
 
 	@GET
 	@Path("/{by}/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Timeline> getBy(@PathParam("by") String by, @PathParam("id") int id) {
+	// public List<Timeline> getBy(@PathParam("by") String by, @PathParam("id") int id) {
+	public Response getBy(@PathParam("by") String by, @PathParam("id") int id) {
 		List<Timeline> listTimeline = service.getBy(by, id);
-		return listTimeline;
+		// return listTimeline;
+
+		GenericEntity<List<Timeline>> list = new GenericEntity<List<Timeline>>(listTimeline) { };
+        return Response.ok(list)
+            .build();
+	}
+
+
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response add(Timeline timeline) {
+		service.insert(timeline);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
+	}
+
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(Timeline timeline) {
+		service.edit(timeline);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delete(@PathParam("id") int id) {
+		service.delete(id);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
 	}
 
 }

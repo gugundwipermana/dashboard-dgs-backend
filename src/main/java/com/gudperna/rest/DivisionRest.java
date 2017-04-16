@@ -18,16 +18,64 @@ import com.gudperna.dao.impl.DivisionDAOImpl;
 
 import com.gudperna.model.Division;
 
-@Path("/divisions")
+import javax.ws.rs.core.GenericEntity;
+
+@Path("/secured/divisions")
 public class DivisionRest {
 
 	DivisionDAO service = new DivisionDAOImpl(ConnectionUtil.getConnection());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Division> getAll() {
+	// public List<Division> getAll() {
+	public Response getAll() {
 		List<Division> listDivision = service.getAll(); 
-		return listDivision; 
+		// return listDivision; 
+
+		GenericEntity<List<Division>> list = new GenericEntity<List<Division>>(listDivision) { };
+        return Response.ok(list)
+            .build();
+	}
+
+	@GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@PathParam("id") int id) { 
+
+        return Response.ok(service.getById(id))
+            .build();
+    }
+
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response add(Division division) {
+		service.insert(division);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
+	}
+
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(Division division) {
+		service.edit(division);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delete(@PathParam("id") int id) {
+		service.delete(id);
+
+		return Response.status(201)
+			.entity("Success")
+			.build();
 	}
 
 }
