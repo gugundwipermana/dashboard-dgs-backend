@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.gudperna.model.User;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +56,14 @@ public class BookingUserDAOImpl implements BookingUserDAO {
 
 		BookingUser bookingUser = new BookingUser();
 		try {
-			ps = connection.prepareStatement("SELECT * FROM TL_BOOKING_USER WHERE id = ?");
+			ps = connection.prepareStatement("SELECT a.*, "+
+				"	b.NAME USER_NAME, "+
+				"	b.AVATAR USER_AVATAR, "+
+				"	b.COLOR USER_COLOR "+
+				"FROM "+
+				"	TL_BOOKING_USER a "+
+				"	INNER JOIN TL_USERS b ON a.user_id = b.ID "+ 
+				"WHERE a.id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if(rs.next()) {
@@ -63,6 +72,13 @@ public class BookingUserDAOImpl implements BookingUserDAO {
 				bookingUser.setUserId(rs.getInt("user_id"));
 				bookingUser.setStatus(rs.getString("status"));
 				bookingUser.setPengganti(rs.getInt("pengganti"));
+
+				User user = new User();
+				user.setName(rs.getString("USER_NAME"));
+				user.setAvatar(rs.getString("USER_AVATAR"));
+				user.setColor(rs.getString("USER_COLOR"));
+
+				bookingUser.setUser(user);
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(BookingUserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -134,7 +150,14 @@ public class BookingUserDAOImpl implements BookingUserDAO {
 		ArrayList<BookingUser> result = new ArrayList<BookingUser>();
 		
 		try {
-			ps = connection.prepareStatement("SELECT * FROM TL_BOOKING_USER WHERE booking_id = ?");
+			ps = connection.prepareStatement("SELECT a.*, "+
+				"	b.NAME USER_NAME, "+
+				"	b.AVATAR USER_AVATAR, "+
+				"	b.COLOR USER_COLOR "+
+				"FROM "+
+				"	TL_BOOKING_USER a "+
+				"	INNER JOIN TL_USERS b ON a.user_id = b.ID "+
+				"WHERE a.booking_id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -144,6 +167,14 @@ public class BookingUserDAOImpl implements BookingUserDAO {
 				bookingUser.setUserId(rs.getInt("user_id"));
 				bookingUser.setStatus(rs.getString("status"));
 				bookingUser.setPengganti(rs.getInt("pengganti"));
+
+				User user = new User();
+				user.setName(rs.getString("USER_NAME"));
+				user.setAvatar(rs.getString("USER_AVATAR"));
+				user.setColor(rs.getString("USER_COLOR"));
+
+				bookingUser.setUser(user);
+
 				result.add(bookingUser);
 			}
 		} catch(SQLException ex) {

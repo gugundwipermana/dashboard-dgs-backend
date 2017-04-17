@@ -7,6 +7,8 @@ public class BookingUser {
 	private String status;
 	private int pengganti;
 
+	// OWNED
+	private User user;
 
 	public int getId() {
 		return id;
@@ -44,6 +46,13 @@ public class BookingUser {
 	}
 
 
+	// OWNED
+	public User getUser() {
+		return user;
+	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }
