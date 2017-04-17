@@ -12,9 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+
 import com.gudperna.util.ConnectionUtil;
 import com.gudperna.dao.TimelineDAO;
 import com.gudperna.dao.impl.TimelineDAOImpl;
+
+import com.gudperna.dao.UserDAO;
+import com.gudperna.dao.impl.UserDAOImpl;
 
 import com.gudperna.model.Timeline;
 
@@ -48,12 +54,25 @@ public class TimelineRest {
 	}
 
 	@GET
-	@Path("/{by}/{id}")
+	@Path("/by/{by}")
 	@Produces(MediaType.APPLICATION_JSON)
-	// public List<Timeline> getBy(@PathParam("by") String by, @PathParam("id") int id) {
-	public Response getBy(@PathParam("by") String by, @PathParam("id") int id) {
+	public Response getBy(@PathParam("by") String by, @Context SecurityContext ctx) {
+
+		UserDAO serviceUser = new UserDAOImpl(ConnectionUtil.getConnection());
+
+		int id = 0;
+
+		// if(by == "c") {
+		// 	id = serviceUser.getFilterIdByEmail(by, ctx.getUserPrincipal().getName());
+		// } else if(by == "d") {
+		// 	id = serviceUser.getFilterIdByEmail(by, ctx.getUserPrincipal().getName());
+		// } else if(by == "e") {
+		// 	id = serviceUser.getFilterIdByEmail(by, ctx.getUserPrincipal().getName());
+		// }
+
+		id = serviceUser.getFilterIdByEmail(by, ctx.getUserPrincipal().getName());
+
 		List<Timeline> listTimeline = service.getBy(by, id);
-		// return listTimeline;
 
 		GenericEntity<List<Timeline>> list = new GenericEntity<List<Timeline>>(listTimeline) { };
         return Response.ok(list)

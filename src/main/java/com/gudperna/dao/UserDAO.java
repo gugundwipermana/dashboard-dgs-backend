@@ -12,4 +12,7 @@ public interface UserDAO {
 
 	public boolean cekUser(User user);
 	public User getByEmail(String email);
+
+	public int getFilterIdByEmail(String by, String email);
+
 }

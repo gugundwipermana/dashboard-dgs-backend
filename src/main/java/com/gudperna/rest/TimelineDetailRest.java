@@ -20,7 +20,7 @@ import com.gudperna.model.TimelineDetail;
 
 import javax.ws.rs.core.GenericEntity;
 
-@Path("/secured/secured/timelinedetails")
+@Path("/secured/timelinedetails")
 public class TimelineDetailRest {
 
 	TimelineDetailDAO service = new TimelineDetailDAOImpl(ConnectionUtil.getConnection());

@@ -180,4 +180,57 @@ public class UserDAOImpl implements UserDAO {
 
 		return user;
 	}
+
+
+	/**
+	 * ----------------------------------
+	 * For Filter
+	 * ----------------------------------
+	 * getBidangIdByEmail()
+	 * getUnitIdByEmail()
+	 * getDivisiIdByEmail()
+	 *
+	 */
+
+	// select
+	//   a.EMAIL,
+	//   b.ID,
+	//   c.ID,
+	//   d.ID
+	// from 
+	//   TL_USERS a
+	//   INNER JOIN TL_BIDANGS b ON a.BIDANG_ID = b.ID 
+	//   INNER JOIN TL_UNITS c ON b.UNIT_ID = c.ID
+	//   INNER JOIN TL_DIVISIONS d ON c.DIVISION_ID = d.ID 
+	// ;
+
+	public int getFilterIdByEmail(String by, String email) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int id = 0;
+		try {
+			ps = connection.prepareStatement("SELECT "+
+				""+by+".ID "+
+				"FROM "+
+				"	TL_USERS a "+
+				"	INNER JOIN TL_BIDANGS c ON a.BIDANG_ID = c.ID "+
+				"	INNER JOIN TL_UNITS d ON c.UNIT_ID = d.ID "+
+				"	INNER JOIN TL_DIVISIONS e ON d.DIVISION_ID = e.ID "+
+				"WHERE a.email = ? "+
+				"");
+
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				id = rs.getInt("ID");
+			}
+
+		} catch(SQLException ex) {
+			Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+	 	}
+
+		return id;
+	}
+	
 }
