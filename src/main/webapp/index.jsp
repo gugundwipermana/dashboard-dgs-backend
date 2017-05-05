@@ -9,5 +9,16 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+
+        <form action="http://localhost:8080/Dashboard-1.0-SNAPSHOT/api/secured/files/upload" method="post" enctype="multipart/form-data">
+     
+            <p>Select a file : 
+            <input type="file" name="file" size="45" />
+            </p>
+
+            <input type="submit" value="Upload" />
+             
+        </form>
+
     </body>
 </html>
