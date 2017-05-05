@@ -1,14 +1,14 @@
 package com.gudperna.dao;
 
-import com.gudperna.model.File;
+import com.gudperna.model.Filez;
 import java.util.ArrayList;
 
 public interface FileDAO {
-	public ArrayList<File> getAll();
-	public File getById(int id);
-	public void insert(File file);
-	public void edit(File file);
+	public ArrayList<Filez> getAll();
+	public Filez getById(int id);
+	public void insert(Filez file);
+	public void edit(Filez file);
 	public void delete(int id);
 
-	public ArrayList<File> getByTimelineDetail(int id);
+	public ArrayList<Filez> getByTimelineDetail(int id);
 }

@@ -1,6 +1,6 @@
 package com.gudperna.dao.impl;
 
-import com.gudperna.model.File;
+import com.gudperna.model.Filez;
 import com.gudperna.dao.FileDAO;
 
 import java.sql.Connection;
@@ -21,8 +21,8 @@ public class FileDAOImpl implements FileDAO {
 		this.connection = connection;
 	}
 
-	public ArrayList<File> getAll() {
-		ArrayList<File> result = new ArrayList<File>();
+	public ArrayList<Filez> getAll() {
+		ArrayList<Filez> result = new ArrayList<Filez>();
 		Statement stmt = null;
 		ResultSet rs = null;
 
@@ -31,7 +31,7 @@ public class FileDAOImpl implements FileDAO {
 				stmt = connection.createStatement();
 				rs = stmt.executeQuery("SELECT * FROM TL_FILES");
 				while(rs.next()) {
-					File file = new File();
+					Filez file = new Filez();
 					file.setId(rs.getInt("id"));
 					file.setTimelineId(rs.getInt("timeline_id"));
 					file.setAttach(rs.getString("attach"));
@@ -45,12 +45,11 @@ public class FileDAOImpl implements FileDAO {
 		return result;
 	}
 
-	@Override
-	public File getById(int id) {
+	public Filez getById(int id) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		File file = new File();
+		Filez file = new Filez();
 		try {
 			ps = connection.prepareStatement("SELECT * FROM TL_FILES WHERE id = ?");
 			ps.setInt(1, id);
@@ -68,7 +67,7 @@ public class FileDAOImpl implements FileDAO {
 	}
 
 	@Override
-	public void insert(File file) {
+	public void insert(Filez file) {
 		PreparedStatement ps = null;
 		try {
 			ps = connection.prepareStatement("INSERT INTO TL_FILES(timeline_id, attach) values(?,?)");
@@ -84,7 +83,7 @@ public class FileDAOImpl implements FileDAO {
 	}
 
 	@Override
-	public void edit(File file) {
+	public void edit(Filez file) {
 		PreparedStatement ps = null;
 		try {
 			ps = connection.prepareStatement("UPDATE TL_FILES SET timeline_id=?, attach=? WHERE id=?");
@@ -120,18 +119,18 @@ public class FileDAOImpl implements FileDAO {
 	 */
 
 	@Override
-	public ArrayList<File> getByTimelineDetail(int id) {
+	public ArrayList<Filez> getByTimelineDetail(int id) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		ArrayList<File> result = new ArrayList<File>();
+		ArrayList<Filez> result = new ArrayList<Filez>();
 		
 		try {
 			ps = connection.prepareStatement("SELECT * FROM TL_FILES WHERE timeline_id = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				File file = new File();
+				Filez file = new Filez();
 				file.setId(rs.getInt("id"));
 				file.setTimelineId(rs.getInt("timeline_id"));
 				file.setAttach(rs.getString("attach"));

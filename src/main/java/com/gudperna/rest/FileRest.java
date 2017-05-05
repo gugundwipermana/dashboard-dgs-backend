@@ -16,7 +16,7 @@ import com.gudperna.util.ConnectionUtil;
 import com.gudperna.dao.FileDAO;
 import com.gudperna.dao.impl.FileDAOImpl;
 
-import com.gudperna.model.File;
+import com.gudperna.model.Filez;
 
 import javax.ws.rs.core.GenericEntity;
 
@@ -28,9 +28,9 @@ public class FileRest {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
-		List<File> dataList = service.getAll(); 
+		List<Filez> dataList = service.getAll(); 
 
-		GenericEntity<List<File>> list = new GenericEntity<List<File>>(dataList) { };
+		GenericEntity<List<Filez>> list = new GenericEntity<List<Filez>>(dataList) { };
         return Response.ok(list)
             .build();
 	}
@@ -48,9 +48,9 @@ public class FileRest {
     @Path("/timelinedetails/{timelinedetail_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByTimelineDetail(@PathParam("timelinedetail_id") int timelinedetail_id) {
-    	List<File> dataList = service.getByTimelineDetail(timelinedetail_id);
+    	List<Filez> dataList = service.getByTimelineDetail(timelinedetail_id);
 
-    	GenericEntity<List<File>> list = new GenericEntity<List<File>>(dataList) { };
+    	GenericEntity<List<Filez>> list = new GenericEntity<List<Filez>>(dataList) { };
         return Response.ok(list)
             .build();
     }
@@ -58,7 +58,7 @@ public class FileRest {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response add(File file) {
+	public Response add(Filez file) {
 		service.insert(file);
 
 		return Response.status(201)
@@ -68,7 +68,7 @@ public class FileRest {
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(File file) {
+	public Response update(Filez file) {
 		service.edit(file);
 
 		return Response.status(201)

@@ -35,6 +35,7 @@ public class MeetingRoomDAOImpl implements MeetingRoomDAO {
 					meetingRoom.setId(rs.getInt("id"));
 					meetingRoom.setName(rs.getString("name"));
 					meetingRoom.setCapacity(rs.getInt("capacity"));
+					meetingRoom.setImage(rs.getString("image"));
 					result.add(meetingRoom);
 				}
 			}
@@ -59,6 +60,7 @@ public class MeetingRoomDAOImpl implements MeetingRoomDAO {
 				meetingRoom.setId(id);
 				meetingRoom.setName(rs.getString("name"));
 				meetingRoom.setCapacity(rs.getInt("capacity"));
+				meetingRoom.setImage(rs.getString("image"));
 			}
 		} catch(SQLException ex) {
 			Logger.getLogger(MeetingRoomDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,9 +73,10 @@ public class MeetingRoomDAOImpl implements MeetingRoomDAO {
 	public void insert(MeetingRoom meetingRoom) {
 		PreparedStatement ps = null;
 		try {
-			ps = connection.prepareStatement("INSERT INTO TL_MEETING_ROOMS(name,capacity) values(?,?)");
+			ps = connection.prepareStatement("INSERT INTO TL_MEETING_ROOMS(name,capacity,image) values(?,?,?)");
 			ps.setString(1, meetingRoom.getName());
 			ps.setInt(2, meetingRoom.getCapacity());
+			ps.setString(3, meetingRoom.getImage());
 			ps.executeUpdate();
 			connection.commit();
 		} catch(SQLException ex) {
@@ -85,10 +88,11 @@ public class MeetingRoomDAOImpl implements MeetingRoomDAO {
 	public void edit(MeetingRoom meetingRoom) {
 		PreparedStatement ps = null;
 		try {
-			ps = connection.prepareStatement("UPDATE TL_MEETING_ROOMS SET name=?, capacity=? WHERE id=?");
+			ps = connection.prepareStatement("UPDATE TL_MEETING_ROOMS SET name=?, capacity=?, image=? WHERE id=?");
 			ps.setString(1, meetingRoom.getName());
 			ps.setInt(2, meetingRoom.getCapacity());
-			ps.setInt(3, meetingRoom.getId());
+			ps.setString(3, meetingRoom.getImage());
+			ps.setInt(4, meetingRoom.getId());
 			ps.executeUpdate();
 			connection.commit();
 		} catch(SQLException ex) {
