@@ -27,7 +27,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 	private static final String AUTHORIZATION_HEADER_KEY = "Authorization"; 
 	private static final String AUTHORIZATION_HEADER_PREFIX = "Basic "; 
 	
-	private static final String SECURED_URL_PREFIX = "securedz"; 
+	private static final String SECURED_URL_PREFIX = "secured"; 
 
 	String error_message = "User cannot access the resource.";
 
